@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人際大冒險：收火神器</title>
+    <style>
+        :root {
+            --primary-pink: #FFC0CB;
+            --dusty-grey: #757575;
+            --soft-blue: #E1F5FE;
+            --accent-pink: #FF8DA1;
+        }
+        body {
+            font-family: "Microsoft JhengHei", "PingFang HK", sans-serif;
+            background-color: #FDF7F8;
+            color: #4A4A4A;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 450px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            text-align: center;
+            border: 1px solid #F0F0F0;
+        }
+        h1 { color: var(--accent-pink); font-size: 22px; margin-bottom: 5px; }
+        .progress { font-size: 12px; color: #CCC; margin-bottom: 25px; letter-spacing: 1px; }
+        .question { display: none; }
+        .question.active { display: block; animation: fadeIn 0.4s ease-out; }
+        .question p { font-size: 17px; font-weight: bold; margin-bottom: 20px; line-height: 1.4; }
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin: 12px 0;
+            background: #FFF;
+            border: 1.5px solid #F0F0F0;
+            border-radius: 15px;
+            font-size: 15px;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover { background: #FFF9FA; border-color: var(--primary-pink); color: var(--accent-pink); transform: translateY(-2px); }
+        
+        #result { display: none; animation: fadeIn 0.6s ease-out; }
+        .animal-icon { font-size: 70px; margin-bottom: 15px; }
+        h2 { color: #555; margin: 10px 0; font-size: 24px; }
+        .desc { font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 20px; padding: 0 10px; }
+        
+        .skill-card {
+            background: var(--soft-blue);
+            padding: 20px;
+            border-radius: 18px;
+            text-align: left;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #B3E5FC;
+        }
+        .skill-card strong { color: #0277BD; display: block; margin-bottom: 8px; font-size: 15px; }
+        .skill-card span { font-size: 14px; color: #444; line-height: 1.5; }
+        
+        .dusty-quote {
+            font-size: 15px;
+            color: var(--dusty-grey);
+            border-top: 1px solid #F0F0F0;
+            padding-top: 25px;
+            line-height: 1.8;
+            position: relative;
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .restart-btn { background: none; border: none; color: #BBB; text-decoration: underline; cursor: pointer; margin-top: 30px; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="quiz">
+            <h1>🎮 衝突冒險者鑑定</h1>
+            <div class="progress" id="progressText">STEP 1 / 3</div>
+            
+            <div class="question active" id="q1">
+                <p>當有人當眾挑釁你，<br>你第一反應通常係？</p>
+                <button class="option-btn" onclick="next('A')">即刻鬧返轉頭，氣勢要壓住佢</button>
+                <button class="option-btn" onclick="next('B')">粒聲唔出，當佢空氣轉身行開</button>
+                <button class="option-btn" onclick="next('C')">唔動手，但會用最毒嘅話單打佢</button>
+                <button class="option-btn" onclick="next('D')">衝動到想推撞對方或者擲嘢</button>
+            </div>
+
+            <div class="question" id="q2">
+                <p>嗰一刻，你心入面<br>最真實嘅感受係？</p>
+                <button class="option-btn" onclick="next('A')">極度躁底，想對方即刻消失</button>
+                <button class="option-btn" onclick="next('B')">覺得好無聊，唔想浪費口水</button>
+                <button class="option-btn" onclick="next('C')">面子掛唔住，想搵對方弱點反擊</button>
+                <button class="option-btn" onclick="next('D')">腦袋一片空白，只係想發洩</button>
+            </div>
+
+            <div class="question" id="q3">
+                <p>衝突瞬間，身體邊個部位<br>最感覺到唔舒服？</p>
+                <button class="option-btn" onclick="next('A')">塊臉發燙、耳仔紅晒、頭暈腦脹</button>
+                <button class="option-btn" onclick="next('B')">覺得胃部縮住，或者呼吸變得很深</button>
+                <button class="option-btn" onclick="next('C')">呼吸短促，眼神變得好銳利</button>
+                <button class="option-btn" onclick="next('D')">心跳極快、手震或者全身繃緊</button>
+            </div>
+        </div>
+
+        <div id="result">
+            <div class="animal-icon" id="icon"></div>
+            <h2 id="name"></h2>
+            <p class="desc" id="desc"></p>
+            
+            <div class="skill-card">
+                <strong id="skillTitle">🛡️ 專屬收火秘笈</strong>
+                <span id="skillText"></span>
+            </div>
+
+            <div class="dusty-quote" id="quote"></div>
+            
+            <button class="restart-btn" onclick="location.reload()">再測一次</button>
+        </div>
+    </div>
+
+    <script>
+        let scores = { A: 0, B: 0, C: 0, D: 0 };
+        let current = 1;
+
+        function next(choice) {
+            scores[choice]++;
+            document.getElementById('q' + current).classList.remove('active');
+            current++;
+            if (current <= 3) {
+                document.getElementById('q' + current).classList.add('active');
+                document.getElementById('progressText').innerText = `STEP ${current} / 3`;
+            } else {
+                render();
+            }
+        }
+
+        function render() {
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            
+            let res = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            const data = {
+                A: { 
+                    name: "火爆獅子", icon: "🦁", 
+                    desc: "你追求公平同尊重，但火氣大到會燒傷自己。", 
+                    skill: "【6 秒能量分流】：爆發前用力握緊拳頭 6 秒，將能量傳到手心，冷卻 CPU。", 
+                    quote: "火起嗰陣，搵個位坐低先。畀啲空間自己，等發燙嘅心慢慢涼返。" 
+                },
+                B: { 
+                    name: "潛行貓頭鷹", icon: "OWL", icon: "🦉", 
+                    desc: "你覺得爭吵浪費時間，冷靜係你最強武器。", 
+                    skill: "【限時表態】：唔使即刻同佢嘈，冷靜完之後先用文字講底線，保護自己唔受傷。", 
+                    quote: "唔想嘈係因為你想守護溫柔。但記得都要抱吓自己，唔好壓抑得太辛苦。" 
+                },
+                C: { 
+                    name: "毒舌響尾蛇", icon: "🐍", 
+                    desc: "你不動手，但說話像飛鏢一針見血。", 
+                    skill: "【三秒過濾器】：開口前停 3 秒，只講事實，過濾攻擊性嘅形容詞。", 
+                    quote: "你咁聰明，一定睇到好多嘢。試吓用呢份智慧，去讀懂自己同人哋嘅小情緒。" 
+                },
+                D: { 
+                    name: "極速獵豹", icon: "🐆", 
+                    desc: "身體反應快過大腦，最容易衝動後悔。", 
+                    skill: "【物理閃現】：一秒都唔好留，立刻離開現場去洗個面，中斷爆發回路。", 
+                    quote: "閃開一陣唔係懦弱。畀時間自己冷靜，係為咗搵返最舒服嘅節奏。" 
+                }
+            };
+
+            document.getElementById('icon').innerText = data[res].icon;
+            document.getElementById('name').innerText = data[res].name;
+            document.getElementById('desc').innerText = data[res].desc;
+            document.getElementById('skillText').innerText = data[res].skill;
+            document.getElementById('quote').innerText = data[res].quote;
+        }
+    </script>
+</body>
+</html>
