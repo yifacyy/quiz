@@ -51,7 +51,17 @@
         .option-btn:hover { background: #FFF9FA; border-color: var(--primary-pink); color: var(--accent-pink); transform: translateY(-2px); }
         
         #result { display: none; animation: fadeIn 0.6s ease-out; }
-        .animal-icon { font-size: 70px; margin-bottom: 15px; }
+        
+        /* 圖片樣式 */
+        .result-img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
         h2 { color: #555; margin: 10px 0; font-size: 24px; }
         .desc { font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 20px; padding: 0 10px; }
         
@@ -72,7 +82,7 @@
             border-top: 1px solid #F0F0F0;
             padding-top: 25px;
             line-height: 1.8;
-            position: relative;
+            font-style: italic;
         }
         
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -112,7 +122,7 @@
         </div>
 
         <div id="result">
-            <div class="animal-icon" id="icon"></div>
+            <img id="resImg" src="" alt="鑑定結果" class="result-img">
             <h2 id="name"></h2>
             <p class="desc" id="desc"></p>
             
@@ -150,32 +160,32 @@
             let res = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
             const data = {
                 A: { 
-                    name: "火爆獅子", icon: "🦁", 
+                    name: "火爆獅子", img: "lion.jpg",
                     desc: "你追求公平同尊重，但火氣大到會燒傷自己。", 
                     skill: "【6 秒能量分流】：爆發前用力握緊拳頭 6 秒，將能量傳到手心，冷卻 CPU。", 
                     quote: "火起嗰陣，搵個位坐低先。畀啲空間自己，等發燙嘅心慢慢涼返。" 
                 },
                 B: { 
-                    name: "潛行貓頭鷹", icon: "OWL", icon: "🦉", 
+                    name: "潛行貓頭鷹", img: "owl.jpg",
                     desc: "你覺得爭吵浪費時間，冷靜係你最強武器。", 
                     skill: "【限時表態】：唔使即刻同佢嘈，冷靜完之後先用文字講底線，保護自己唔受傷。", 
                     quote: "唔想嘈係因為你想守護溫柔。但記得都要抱吓自己，唔好壓抑得太辛苦。" 
                 },
                 C: { 
-                    name: "毒舌響尾蛇", icon: "🐍", 
+                    name: "毒舌響尾蛇", img: "snake.jpg",
                     desc: "你不動手，但說話像飛鏢一針見血。", 
                     skill: "【三秒過濾器】：開口前停 3 秒，只講事實，過濾攻擊性嘅形容詞。", 
                     quote: "你咁聰明，一定睇到好多嘢。試吓用呢份智慧，去讀懂自己同人哋嘅小情緒。" 
                 },
                 D: { 
-                    name: "極速獵豹", icon: "🐆", 
+                    name: "極速獵豹", img: "cheetah.jpg",
                     desc: "身體反應快過大腦，最容易衝動後悔。", 
                     skill: "【物理閃現】：一秒都唔好留，立刻離開現場去洗個面，中斷爆發回路。", 
                     quote: "閃開一陣唔係懦弱。畀時間自己冷靜，係為咗搵返最舒服嘅節奏。" 
                 }
             };
 
-            document.getElementById('icon').innerText = data[res].icon;
+            document.getElementById('resImg').src = data[res].img;
             document.getElementById('name').innerText = data[res].name;
             document.getElementById('desc').innerText = data[res].desc;
             document.getElementById('skillText').innerText = data[res].skill;
